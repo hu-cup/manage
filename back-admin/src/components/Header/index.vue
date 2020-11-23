@@ -6,7 +6,7 @@
         src="http://mengxuegu.com:9999/img/logo.7156be27.png"
         alt="logo"
       />
-      <h3 class="title">积云会员管理系统</h3>
+      <h3 class="title">梦学谷会员管理系统</h3>
     </router-link>
     <el-dropdown @command="handleCommand">
       <span class="el-dropdown-link">
@@ -145,16 +145,20 @@ export default {
       this.dialogFormVisible = true;
     },
     //退出登录的方法
+    // out(){
+    //   this.$router.push("/login")
+    //   localStorage.removeItem('token')
+    // }
     async logout() {
+        // this.$router.push("/login");
+      const res = await this.$store.dispatch("UserLogout");
+      if (res.flag) {
+        //回到登录页面
         this.$router.push("/login");
-    //   const res = await this.$store.dispatch("UserLogout");
-    //   if (res) {
-    //     //回到登录页面
-    //     this.$router.push("/login");
-    //   } else {
-    //         this.$message.error("修改密码失败")
-    //   }
-    }
+      } else {
+            this.$message.error("修改密码失败")
+      }
+     }
   },
   components: {}
 };

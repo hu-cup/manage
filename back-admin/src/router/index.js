@@ -5,6 +5,10 @@ import Layout from "../components/Layout";
 Vue.use(VueRouter);
 
 const routes = [
+  // {
+  //   path:'*',
+  //   redirect:"/"
+  // },
    //登录
    {
     path:"/login",
@@ -16,10 +20,10 @@ const routes = [
     path:'/',
     name:"Layout",
     component:Layout,
-    // redirect:'/login',
+    redirect:'/frist',
     children:[
       {
-        path:'/frist',
+        path:'frist',
         component:() => import("../views/frist")
       }
     ]

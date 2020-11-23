@@ -88,6 +88,16 @@
     <el-button type="primary" @click="addShoplis">确 定</el-button>
   </div>
 </el-dialog>
+<!-- 分页器 -->
+ <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="page"
+      :page-sizes="[10, 20, 30, 40]"
+      :page-size="pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total">
+    </el-pagination>
   </div>
 </template>
 
@@ -103,6 +113,13 @@ export default {
   // 组件状态值
   data() {
     return {
+        // 分页器
+         
+        // 分页相关
+        total: 0, // 总记录数
+        page: 1, // 当前页码
+        pageSize: 10, // 每页显示20条数据,
+      
        tableData:[],
     //    编辑
        dialogFormVisible:false,
@@ -112,7 +129,7 @@ export default {
        user:{
 
        },
-
+  
     //    编辑
      rules: {
           name: [
@@ -144,8 +161,19 @@ export default {
     async getdata(){
        let datas = await getGoods();
       this.tableData = datas.data.rows;
+      this.total = datas.data.total
       },
-     
+     // 分页器
+     handleSizeChange(val) {
+        // console.log(`每页 ${val} 条`);
+        this.pageSize = val,
+        this.getdata()
+      },
+      handleCurrentChange(val) {
+        // console.log(`当前页: ${val}`);
+        this.page = val,
+        this.getdata()
+      },
        // 删除
      async handleDelete(id){
          let res = await lssDelete(id);

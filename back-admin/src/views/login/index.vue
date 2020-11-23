@@ -21,7 +21,7 @@
 
 <script>
 import _ from "lodash";
-import { login, getInfo } from "../../api/login";
+// import { login, getInfo } from "../../api/login";
 export default {
   name: "",
   data() {
@@ -57,12 +57,11 @@ export default {
         // 如果验证通过，则调用登录接口，进行登录，否则给用户一个提示信息
         if (valid) {
           // this.addLogin()
-          const response = await login(this.form.username, this.form.password);
+          const response = await this.$store.dispatch('UserLogin',this.form);
           const res = response;
-          console.log(res);
           if (res.flag) {
-            localStorage.setItem('token',res.data.token)
-            this.$router.push("/frist");
+            // localStorage.setItem('token',res.data.token)
+            this.$router.push("/");
            this.$message.success("成功");
           } else {
            this.$message.error("登陆失败");
