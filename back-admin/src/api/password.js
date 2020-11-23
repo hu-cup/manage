@@ -1,6 +1,6 @@
 import Server from "../utils/request"
 
-export function checkpassword(){
+export function checkPassword(id,oldPass){
     return Server({
          url : "/user/pwd",
         method : "POST",

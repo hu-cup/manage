@@ -1,7 +1,7 @@
 <template>
   <div class="login-wrapper">
     <div class="login-center">
-      <h2 class="login-title">积云会员管理系统</h2>
+      <h2 class="login-title">梦学谷会员管理系统</h2>
       <el-form ref="loginForm" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="账号" prop="username">
           <el-input v-model.trim="form.username"></el-input>
@@ -58,9 +58,10 @@ export default {
         if (valid) {
           // this.addLogin()
           const response = await login(this.form.username, this.form.password);
-          const res = response.data;
+          const res = response;
           console.log(res);
-          if (res) {
+          if (res.flag) {
+            localStorage.setItem('token',res.data.token)
             this.$router.push("/frist");
            this.$message.success("成功");
           } else {

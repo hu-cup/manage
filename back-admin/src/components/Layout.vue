@@ -1,136 +1,57 @@
 <template>
-  <div style="height:100%;">
-    <el-container style="height:100%">
-      <el-header>Header</el-header>
-      <el-container style="height:100%">
-        <el-aside width="200px"  style="height:100%">
-          <el-aside width="200px"  style="height:100%">
-            <el-menu
-             style="height:100%"
-              default-active="2"
-              class="el-menu-vertical-demo"
-              background-color="#545c64"
-              text-color="#fff"
-              active-text-color="#ffd04b"
-              router
-            >
-              <el-menu-item index="/frist">
-                <i class="el-icon-menu"></i>
-                <span slot="title">首页</span>
-              </el-menu-item>
-              <el-menu-item index="/merber">
-                <i class="el-icon-menu"></i>
-                <span slot="title">会员管理</span>
-              </el-menu-item>
-              <el-menu-item index="/supplier">
-                <i class="el-icon-menu"></i>
-                <span slot="title">供应商管理</span>
-              </el-menu-item>
-              <el-menu-item index="/goods">
-                <i class="el-icon-menu"></i>
-                <span slot="title">商品管理</span>
-              </el-menu-item>
-              <el-menu-item index="staff">
-                <i class="el-icon-menu"></i>
-                <span slot="title">员工管理</span>
-              </el-menu-item>
-            </el-menu>
-          </el-aside>
-        </el-aside>
-        <el-main>
-          <router-view></router-view>
-        </el-main>
-      </el-container>
-    </el-container>
-  </div>
+ <div>
+     <!-- 头部 -->
+    <Header></Header>
+     <!-- 侧边栏 -->
+    <Navbar></Navbar>
+     <!-- 右侧主体内容 -->
+     <Main></Main>
+ </div>
 </template>
 
 <script>
+import Header from "./Header"
+import Navbar from "./Navbar"
+import Main from "./Main"
 export default {
-  // 组件名称
-  name: "demo",
-  // 组件参数 接收来自父组件的数据
-  props: [],
-  // 局部注册的组件
-  components: {},
-  // 组件状态值
-  data() {
-    return {};
-  },
-  // 计算属性
-  computed: {},
-  // 侦听器
-  watch: {},
-  // 组件方法
-  methods: {},
-  // 以下是生命周期钩子 注：没用到的钩子请自行删除
-  /**
-   * 在实例初始化之后，组件属性计算之前，如data属性等
-   */
-  beforeCreate() {},
-  /**
-   * 组件实例创建完成，属性已绑定，但DOM还未生成，$ el属性还不存在
-   */
-  created() {},
-  /**
-   * 在挂载开始之前被调用：相关的 render 函数首次被调用。
-   */
-  beforeMount() {},
-  /**
-   * el 被新创建的 vm.$ el 替换，并挂载到实例上去之后调用该钩子。
-   * 如果 root 实例挂载了一个文档内元素，当 mounted 被调用时 vm.$ el 也在文档内。
-   */
-  mounted() {},
-  /**
-   * 数据更新时调用，发生在虚拟 DOM 重新渲染和打补丁之前。
-   * 你可以在这个钩子中进一步地更改状态，这不会触发附加的重渲染过程。
-   */
-  beforeUpdate() {},
-  /**
-   * 由于数据更改导致的虚拟 DOM 重新渲染和打补丁，在这之后会调用该钩子。
-   * 当这个钩子被调用时，组件 DOM 已经更新，所以你现在可以执行依赖于 DOM 的操作。
-   */
-  updated() {},
-  /**
-   * keep-alive 组件激活时调用。 仅针对keep-alive 组件有效
-   */
-  activated() {},
-  /**
-   * keep-alive 组件停用时调用。 仅针对keep-alive 组件有效
-   */
-  deactivated() {},
-  /**
-   * 实例销毁之前调用。在这一步，实例仍然完全可用。
-   */
-  beforeDestroy() {},
-  /**
-   * Vue 实例销毁后调用。调用后，Vue 实例指示的所有东西都会解绑定，
-   * 所有的事件监听器会被移除，所有的子实例也会被销毁。
-   */
-  destroyed() {},
-};
-</script> 
+ name : "", 
+ data(){
+  return {
+  }
+ },
+ components : {
+   Header,
+Navbar,
+Main
+ },
+}
+</script>
+
+
 <style scoped>
-  .el-header, .el-footer {
-    background-color: #2d3a4b;
-    color: #333;
-    /* text-align: center; */
-    line-height: 60px;
-  }
-  .el-aside{
-      height: 800px;
-  }
-  /* .el-aside {
-    background-color: #D3DCE6;
-    color: #333;
-    text-align: center;
-    line-height: 200px;
-  } */
-  
-  /* .el-main {
-    background-color: #E9EEF3;
-    color: #333;
-    text-align: center;
-    line-height: 160px;
-  } */
+    .header{
+        height: 50px;
+        line-height: 50px;
+        background-color: #2d3a4b;
+        position : absolute;
+        left: 0;
+        right: 0;
+    }
+    .navBar{
+        width : 230px;
+        background-color: #545c64;
+        position : absolute;
+        top : 50px;
+        bottom : 0;
+        left: 0;
+    }
+    .main{
+        position : absolute;
+        left: 230px;
+        top : 50px;
+        bottom : 0;
+        right : 0;
+        background-color: #fff;
+        overflow-y: auto;
+    }
 </style>
