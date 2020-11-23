@@ -3,11 +3,13 @@
     <!-- 头部 -->
     <div class="zl_top">
       <div class="zl_left">
-        <div><el-input v-model="name1" placeholder="供应商名称"></el-input></div>
+        <div>
+          <el-input v-model="name1" placeholder="供应商名称"></el-input>
+        </div>
         <div><el-input v-model="name2" placeholder="联系人"></el-input></div>
         <div><el-input v-model="name3" placeholder="联系电话"></el-input></div>
         <div><el-button type="primary" @click="search">查询</el-button></div>
-        <div><el-button type="primary">新增</el-button></div>
+        <div><el-button type="primary" @click="onJoin">新增</el-button></div>
         <div><el-button @click="onClikvalue">重置</el-button></div>
       </div>
       <div class="zl_right"></div>
@@ -28,16 +30,75 @@
         <el-table-column prop="date" label="操作" width="140">
           <!-- 插槽 -->
           <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" size="small"
-              >编辑</el-button
-            >
-            <el-button type="text" size="small" @click="remove(scope.$index)"
-              >删除</el-button
-            >
+             <!-- 编辑 -->
+    <el-dialog title="供应商编辑" :visible.sync="dialogEditVisible">
+      <div class="box">
+        <div>
+          供应商名称:<el-input
+            v-model="ruleForm.name"
+            placeholder="供应商名称"
+          ></el-input>
+        </div>
+        <div>
+          联系人:<el-input
+            v-model="ruleForm.linkman"
+            placeholder="联系人"
+          ></el-input>
+        </div>
+        <div>
+          联系电话:<el-input
+            v-model="ruleForm.mobile"
+            placeholder="联系电话"
+          ></el-input>
+        </div>
+        <div>
+          备注:<el-input
+            v-model="ruleForm.remark"
+            placeholder="备注"
+          ></el-input>
+        </div>
+        <div class="button">
+          <el-button size="small" @click="dialogEditVisible = false"
+            >取消</el-button
+          >
+          <el-button type="primary" size="small" @click="save(scope.row.id)">确认</el-button>
+        </div>
+      </div>
+    </el-dialog>
+            <div class="input">
+              <el-button
+                type="primary"
+                @click="onClickDeit(scope.row.id)"
+                size="small"
+                >编辑</el-button
+              >
+
+
+              <el-button
+                type="danger"
+                @click="remove(scope.$index)"
+                size="small"
+                >删除</el-button
+              >
+            </div>
           </template>
         </el-table-column>
       </el-table>
     </div>
+   
+    <!-- 新增 -->
+    <el-dialog title="供应商新增" :visible.sync="dialogEditVisible2">
+      <div class="box">
+        <div>供应商名称:<el-input placeholder="供应商名称"></el-input></div>
+        <div>联系人:<el-input placeholder="联系人"></el-input></div>
+        <div>联系电话:<el-input placeholder="联系电话"></el-input></div>
+        <div>备注:<el-input placeholder="备注"></el-input></div>
+        <div class="button">
+          <el-button size="small">取消</el-button>
+          <el-button type="primary" size="small">确认</el-button>
+        </div>
+      </div>
+    </el-dialog>
     <!-- 分页 -->
     <el-pagination
       @size-change="changesize"
@@ -46,14 +107,15 @@
       :page-sizes="[10, 20, 30, 40]"
       :page-size="pagesize"
       layout="total, sizes, prev, pager, next, jumper"
-      :total="totle">
+      :total="totle"
+    >
     </el-pagination>
   </div>
 </template>
 
 <script>
 import { createLogger } from "vuex";
-import { getSupplierList } from "../../api/supplier";
+import { getSupplierList, edit ,update} from "../../api/supplier";
 export default {
   // 组件名称
   name: "demo",
@@ -64,17 +126,21 @@ export default {
   // 组件状态值
   data() {
     return {
-      formInline: {
-        user: "",
-        name: "",
-      },
       pagesize: 10,
       pagenum: 1,
-      totle:0,
+      totle: 0,
       list: [],
       name1: "",
       name2: "",
       name3: "",
+      dialogEditVisible: false,
+      dialogEditVisible2: false,
+      ruleForm: {
+        name: "",
+        linkman: "",
+        mobile: "",
+        remark: "",
+      },
     };
   },
   // 计算属性
@@ -85,9 +151,9 @@ export default {
   methods: {
     async gitMemberData() {
       let res = await getSupplierList(this.pagenum, this.pagesize);
-        console.log(res)
+      console.log(res);
       this.list = res.data.rows;
-      this.totle = res.data.total
+      this.totle = res.data.total;
       // console.log(this.list);
     },
     // 清空
@@ -99,28 +165,53 @@ export default {
     // 删除
     remove(index) {
       this.list.splice(index, 1);
-    }, 
-    
+    },
+
     // 搜索
     search() {
-      this.list = this.list.filters((item) => {
+      this.list = this.list.filter((item) => {
         return (
-          item.name1.includes(this.formInline.user) &&
-          item.name2.includes(this.formInline.name)
+          item.name.includes(this.name1) &&
+          item.linkman.includes(this.name2) &&
+          item.mobile.includes(this.name3)
         );
       });
       console.log(this.list);
     },
     //分页
-    
-    //条数
-    changesize(){
 
+    //条数
+    changesize(val) {
+      this.changesize = val;
+      this.gitMemberData();
     },
     //页数
-    changenum(){
-
-    }
+    changenum(val) {
+      this.pagenum = val;
+      this.gitMemberData();
+    },
+    // 编辑
+    onClickDeit(val) {
+      this.dialogEditVisible = true;
+        edit(val).then(res=>{
+          this.ruleForm = res.data
+        })
+    },
+    save(id) {
+         update(id,this.ruleForm).then(res=>{
+           console.log(res)
+           if(res.code ===  2000){
+             this.$message.success('修改完成')
+             this.dialogEditVisible = false
+           }else{
+             this.$message.error('修改失败')
+           }
+         })
+    },
+    // 新增
+    onJoin() {
+      this.dialogEditVisible2 = true;
+    },
   },
   // 以下是生命周期钩子 注：没用到的钩子请自行删除
   /**
@@ -196,5 +287,23 @@ export default {
   overflow: scroll;
   // background: chartreuse;
   //   border: 1px solid #cccccc;
+}
+.box {
+  height: 400px;
+
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  flex-wrap: wrap;
+  div {
+    width: 100%;
+  }
+}
+.input {
+  display: flex;
+}
+.button {
+  display: flex;
+  justify-content: flex-end;
 }
 </style>
