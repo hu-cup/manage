@@ -6,7 +6,7 @@
     <el-input placeholder="选择供应商"></el-input>
   <el-form-item>
     <el-button type="primary" @click="onSubmit">查询</el-button>
-    <el-button type="primary" @click="onSubmit">新增</el-button>
+    <el-button type="primary" @click="newShop = true">新增</el-button>
      <el-button @click="resetForm('ruleForm')">重置</el-button>
   </el-form-item>
     </el-form>
@@ -57,11 +57,52 @@
     <el-button type="primary" @click="queding">确 定</el-button>
   </div>
 </el-dialog>
+<!-- 新增 -->
+    <el-dialog title="新增商品" :visible.sync="newShop">
+  <el-form :model="xz" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+  <el-form-item label="编辑名称" prop="name">
+    <el-input v-model="xz.name"></el-input>
+  </el-form-item>
+    <el-form-item label="商品编码" prop="id">
+    <el-input v-model="xz.id"></el-input>
+  </el-form-item>
+   <el-form-item label="商品规格" prop="spec">
+    <el-input v-model="xz.spec"></el-input>
+  </el-form-item>
+   <el-form-item label="零售价" prop="purchasePrice">
+    <el-input v-model="xz.purchasePrice"></el-input>
+  </el-form-item>
+    <el-form-item label="进货价" prop="retailPrice">
+    <el-input v-model="xz.retailPrice"></el-input>
+  </el-form-item>
+    <el-form-item label="库存数量" prop="storageNum">
+    <el-input v-model="xz.storageNum"></el-input>
+  </el-form-item>
+    <el-form-item label="供应商" prop="supplierName">
+    <el-input v-model="xz.supplierName"></el-input>
+  </el-form-item>
+  
+</el-form>
+  <div slot="footer" class="dialog-footer">
+    <el-button @click="newShop = false">取 消</el-button>
+    <el-button type="primary" @click="addShoplis">确 定</el-button>
+  </div>
+</el-dialog>
+<!-- 分页器 -->
+ <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="page"
+      :page-sizes="[10, 20, 30, 40]"
+      :page-size="pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total">
+    </el-pagination>
   </div>
 </template>
 
 <script>
-import { getGoods,lssDelete } from "@/api/goods";
+import { getGoods,lssDelete,lssAddShop } from "@/api/goods";
 export default {
   // 组件名称
   name: "demo",
@@ -72,11 +113,23 @@ export default {
   // 组件状态值
   data() {
     return {
+        // 分页器
+         
+        // 分页相关
+        total: 0, // 总记录数
+        page: 1, // 当前页码
+        pageSize: 10, // 每页显示20条数据,
+      
        tableData:[],
+    //    编辑
        dialogFormVisible:false,
+    //    新增
+       xz:{},
+       newShop:false,
        user:{
 
        },
+  
     //    编辑
      rules: {
           name: [
@@ -108,8 +161,19 @@ export default {
     async getdata(){
        let datas = await getGoods();
       this.tableData = datas.data.rows;
+      this.total = datas.data.total
       },
-     
+     // 分页器
+     handleSizeChange(val) {
+        // console.log(`每页 ${val} 条`);
+        this.pageSize = val,
+        this.getdata()
+      },
+      handleCurrentChange(val) {
+        // console.log(`当前页: ${val}`);
+        this.page = val,
+        this.getdata()
+      },
        // 删除
      async handleDelete(id){
          let res = await lssDelete(id);
@@ -138,6 +202,19 @@ export default {
           this.user=item
         }
       })
+    },
+    // 新增
+    async addShoplis(){
+        let response = await lssAddShop()
+        console.log(response);
+        
+        if(response.flag){
+            this.newShop = false;
+            this.$message.success(response.message)
+            this.getdata();
+        }
+        
+
     }
   },
   // 以下是生命周期钩子 注：没用到的钩子请自行删除
