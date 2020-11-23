@@ -5,10 +5,10 @@ import Layout from "../components/Layout";
 Vue.use(VueRouter);
 
 const routes = [
-  {
-    path:'*',
-    redirect:"/"
-  },
+  // {
+  //   path:'*',
+  //   redirect:"/"
+  // },
    //登录
    {
     path:"/login",

@@ -17,7 +17,7 @@
         <el-dropdown-item command="change-pass" icon="el-icon-edit"
           >修改密码</el-dropdown-item
         >
-        <el-dropdown-item command="logout" icon="el-icon-s-fold"
+        <el-dropdown-item command="logout" icon="el-icon-s-fold" 
           >退出登录</el-dropdown-item
         >
       </el-dropdown-menu>
@@ -145,16 +145,16 @@ export default {
       this.dialogFormVisible = true;
     },
     //退出登录的方法
-    async logout() {
-        this.$router.push("/login");
+    // async logout() {
+    //     // this.$router.push("/login");
     //   const res = await this.$store.dispatch("UserLogout");
-    //   if (res) {
+    //   if (res.flag) {
     //     //回到登录页面
     //     this.$router.push("/login");
     //   } else {
     //         this.$message.error("修改密码失败")
     //   }
-    }
+    //  }
   },
   components: {}
 };

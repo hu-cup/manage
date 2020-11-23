@@ -61,12 +61,13 @@ export default new Vuex.Store({
     //退出
     UserLogout({commit}){
       return new Promise((resolve, reject) => {
-        logout().then(response=>{
-          const res = response.data;
-          if(res){
+        logout().then(res=>{
+          // const res = response.data;
+          // console.log(response);
+          if(res.flag){
             commit("SET_TOKEN",null);
             commit("SET_INFO",null);
-            removeUser();
+            // removeUser();
             resolve(res)
           }
         })
