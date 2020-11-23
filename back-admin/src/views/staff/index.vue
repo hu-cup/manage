@@ -36,8 +36,8 @@
       </el-table-column>
       <el-table-column label="操作" width="190">
         <template slot-scope="scope">
-          <el-button size="small" @click="edit(scope.row)">编辑</el-button>
-          <el-button type="danger" size="small" @click="remove(scope.$index)"
+          <el-button size="small" @click="_edit(scope.row.id)">编辑</el-button>
+          <el-button type="danger" size="small" @click="remove(scope.row.id)"
             >删除</el-button
           >
         </template>
@@ -141,7 +141,7 @@
 </template>
 
 <script>
-import { getStaffList } from "../../api/staff";
+import { getStaffList, edit, save, del, add } from "../../api/staff";
 export default {
   // 组件名称
   name: "demo",
@@ -203,8 +203,8 @@ export default {
   // 组件方法
   methods: {
     //请求方法
-    getList() {
-      getStaffList(this.pageNum, this.pageSize)
+    /* getList() {
+       getStaffList(this.pageNum, this.pageSize)
         .then((res) => {
           console.log(res.data);
           this.total = res.data.total;
@@ -214,6 +214,12 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+    }, */
+    async getList() {
+      const res = await getStaffList(this.pageNum, this.pageSize);
+      this.total = res.data.total;
+      this.list = res.data.rows;
+      this.allList = Object.assign([], res.data.rows);
     },
     //条数切换
     handleSizeChange(val) {
@@ -226,31 +232,53 @@ export default {
       this.getList();
     },
     //编辑回填数据
-    edit(val) {
+    async _edit(val) {
       this.editShow = true;
-      this.ruleForm = val;
+      const res = await edit(val);
+      console.log(res);
+      if (res.code == 2000) {
+        this.ruleForm = res.data;
+      }
     },
     //保存编辑
-    saveEdit(val) {
+    async saveEdit() {
+      console.log(this.ruleForm);
       this.editShow = false;
-      this.list.forEach((item) => {
-        if (item.id == val.id) {
-          item = val;
-        }
-      });
+      const res = await save(
+        this.ruleForm.id,
+        this.ruleForm.username,
+        this.ruleForm.name,
+        this.ruleForm.age,
+        this.ruleForm.mobile,
+        this.ruleForm.salary,
+        this.ruleForm.entryDate
+      );
+      console.log(res);
+      if (res.code == 2000) {
+        this.$message({
+          message: res.message,
+          type: "success",
+        });
+        this.getList();
+      }
     },
     //删除
-    remove(index) {
+    remove(id) {
       this.$confirm("确认删除这条记录吗", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
       })
         .then(() => {
-          this.list.splice(index, 1);
-          this.$message({
-            type: "success",
-            message: "删除成功!",
+          del(id).then((res) => {
+            console.log(res);
+            if (res.code == 2000) {
+              this.$message({
+                type: "success",
+                message: "删除成功!",
+              });
+              this.getList();
+            }
           });
         })
         .catch(() => {
@@ -262,9 +290,8 @@ export default {
     },
     //重置
     reset() {
-      this.list = Object.assign([], this.allList);
-      this.formInline.user = "";
-      this.formInline.name = "";
+      this.formInline.user == "";
+      this.formInline.name == "";
     },
     //搜索
     search() {
@@ -277,12 +304,28 @@ export default {
       console.log(this.list);
     },
     //新增
-    saveAdd() {
-      this.addItems.id = this.list[this.list.length - 1].id + 1;
-
-      this.list.unshift(this.addItems);
+    async saveAdd() {
+      const res = await add(
+        this.addItems.id,
+        this.addItems.username,
+        this.addItems.name,
+        this.addItems.age,
+        this.addItems.mobile,
+        this.addItems.salary,
+        this.addItems.entryDate
+      );
+      console.log(res);
+      if (res.code == 2000) {
+        this.$message({
+          type: "warning",
+          message: "新增成功，初始密码为：123456",
+        });
+        this.getList();
+      }
       this.addShow = false;
-      this.addItems = [];
+      // this.addItems.id = this.list[this.list.length - 1].id + 1;
+      // this.list.unshift(this.addItems);
+      // this.addItems = [];
     },
   },
 
