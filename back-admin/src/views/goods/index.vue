@@ -1,5 +1,4 @@
 <template>
-<<<<<<< HEAD
   <div>
     <el-form :inline="true" class="demo-form-inline">
     <el-input placeholder="商品名称"></el-input>
@@ -28,16 +27,10 @@
       </el-table-column>
     </el-table>
   </div>
-=======
-<div>
-    <div class="box"></div>
-</div>
->>>>>>> 1a25e61f57d34a64ab2947a22664b4f841279c40
 </template>
 
 <script>
-import { getGoods } from "@/api/goods";
-import { lssDelete } from "@/api/goods";
+import { getGoods,lssDelete } from "@/api/goods";
 export default {
   // 组件名称
   name: "demo",
@@ -72,11 +65,16 @@ export default {
      async handleDelete(id){
          let res = await lssDelete(id);
          console.log(res);
-         if(res.code == 20000){
+         if(res.code == 2000){
+             this.tableData.filter(item=>{
+                 if(item.id===id){
+                     this.tableData.splice(item,1)
+                 }
+             })
              this.$message.success("删除成功");
-             this.tableData();
+            //  this.tableData();
          }else{
-             this.$message.success("删除失败");
+             this.$message.error("删除失败");
          }
      }
   },
@@ -130,16 +128,10 @@ export default {
 };
 </script> 
 <style scoped>
-<<<<<<< HEAD
+
 .el-input{
     width: 200px;
     margin-left: 10px;
 }
-=======
-    .box{
-        width: 200px;
-        height: 200px;
-        background : yellow;
-    }
->>>>>>> 1a25e61f57d34a64ab2947a22664b4f841279c40
+
 </style>

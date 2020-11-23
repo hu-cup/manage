@@ -6,14 +6,14 @@ export function getGoods(){
             method:'POST',
       
     })
+}
 //    删除
 export function lssDelete(id){
-    return Server({
-        url:`supplier/${id}`,
+    return request({
+        url:`goods/${id}`,
         method:'DELETE',
         data:{
             id
         }
     })
-}
 }
