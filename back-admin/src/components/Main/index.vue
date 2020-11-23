@@ -1,6 +1,6 @@
 <template>
     <div class="main">
-        <app-link v-if="$route.path != '/home'"></app-link>
+        <app-link v-if="$route.path != '/frist'"></app-link>
         <router-view></router-view>
     </div>
 </template>
