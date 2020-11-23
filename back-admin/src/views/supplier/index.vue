@@ -40,11 +40,13 @@
     </div>
     <!-- 分页 -->
     <el-pagination
-      :page-size="20"
-      :pager-count="11"
-      layout="prev, pager, next"
-      :total="1000"
-    >
+      @size-change="changesize"
+      @current-change="changenum"
+      :current-page="pagenum"
+      :page-sizes="[10, 20, 30, 40]"
+      :page-size="pagesize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="totle">
     </el-pagination>
   </div>
 </template>
@@ -68,6 +70,7 @@ export default {
       },
       pagesize: 10,
       pagenum: 1,
+      totle:0,
       list: [],
       name1: "",
       name2: "",
@@ -82,9 +85,10 @@ export default {
   methods: {
     async gitMemberData() {
       let res = await getSupplierList(this.pagenum, this.pagesize);
-      //   console.log(datas)
+        console.log(res)
       this.list = res.data.rows;
-      console.log(this.list);
+      this.totle = res.data.total
+      // console.log(this.list);
     },
     // 清空
     onClikvalue() {
@@ -95,8 +99,9 @@ export default {
     // 删除
     remove(index) {
       this.list.splice(index, 1);
-    }, //搜索
-
+    }, 
+    
+    // 搜索
     search() {
       this.list = this.list.filters((item) => {
         return (
@@ -106,6 +111,16 @@ export default {
       });
       console.log(this.list);
     },
+    //分页
+    
+    //条数
+    changesize(){
+
+    },
+    //页数
+    changenum(){
+
+    }
   },
   // 以下是生命周期钩子 注：没用到的钩子请自行删除
   /**
