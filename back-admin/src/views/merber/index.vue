@@ -1,6 +1,6 @@
 <!--  loves you forever -->
 <template>
-  <div class="member">
+  <div>
     <!-- 搜索 -->
     <el-form
       :inline="true"
@@ -12,21 +12,21 @@
         <el-input
           v-model="searchMember.cardNum"
           placeholder="会员卡号"
-          style="width:200px"
+          style="width: 200px"
         ></el-input>
       </el-form-item>
       <el-form-item prop="name">
         <el-input
           v-model="searchMember.name"
           placeholder="会员姓名"
-          style="width:200px"
+          style="width: 200px"
         ></el-input>
       </el-form-item>
       <el-form-item prop="payType">
         <el-select
           v-model="searchMember.payType"
           placeholder="支付类型"
-          style="width:110px"
+          style="width: 110px"
         >
           <el-option
             v-for="item in payType"
@@ -56,17 +56,34 @@
       <el-table-column prop="cardNum" label="会员卡号"></el-table-column>
       <el-table-column prop="name" label="会员姓名"></el-table-column>
       <el-table-column prop="birthday" label="会员生日"></el-table-column>
-      <el-table-column prop="phone" label="手机号码" width="110"></el-table-column>
+      <el-table-column
+        prop="phone"
+        label="手机号码"
+        width="110"
+      ></el-table-column>
       <el-table-column prop="integral" label="可用积分"></el-table-column>
       <el-table-column prop="money" label="开卡金额"></el-table-column>
       <el-table-column prop="payType" label="支付类型">
-        <template slot-scope="scope">{{ scope.row.payType | payTypeFilter }}</template>
+        <template slot-scope="scope">{{
+          scope.row.payType | payTypeFilter
+        }}</template>
       </el-table-column>
-      <el-table-column prop="address" label="会员地址" width="180"></el-table-column>
+      <el-table-column
+        prop="address"
+        label="会员地址"
+        width="180"
+      ></el-table-column>
       <el-table-column label="操作" width="150">
         <template slot-scope="scope">
-          <el-button size="mini" @click="handleEditMember(scope.row.id)">编辑</el-button>
-          <el-button size="mini" type="danger" @click="handleDeleteMember(scope.row.id)">删除</el-button>
+          <el-button size="mini" @click="handleEditMember(scope.row.id)"
+            >编辑</el-button
+          >
+          <el-button
+            size="mini"
+            type="danger"
+            @click="handleDeleteMember(scope.row.id)"
+            >删除</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
@@ -94,7 +111,7 @@
         :rules="rules"
         status-icon
         label-width="100px"
-        style="width:400px"
+        style="width: 400px"
         label-position="right"
         :model="addMemberForm"
       >
@@ -182,9 +199,9 @@ export default {
   data() {
     //这里存放数据
     return {
-     memberTitle: {
+      memberTitle: {
         add: "会员新增",
-        edit: "会员编辑"
+        edit: "会员编辑",
       },
       addMemberForm: {
         cardNum: "",
@@ -194,17 +211,17 @@ export default {
         payType: "",
         money: 0,
         integral: 0,
-        address: ""
+        address: "",
       },
       // 验证
       rules: {
         cardNum: [
-          { required: true, message: "请输入会员卡号", trigger: "blur" }
+          { required: true, message: "请输入会员卡号", trigger: "blur" },
         ],
         name: [{ required: true, message: "请输入姓名", trigger: "blur" }],
         payType: [
-          { required: true, message: "请选择支付类型", trigger: "change" }
-        ]
+          { required: true, message: "请选择支付类型", trigger: "change" },
+        ],
       },
       dialogFormVisible: false,
       payType: payType,
@@ -212,7 +229,7 @@ export default {
       page: 1,
       pageSize: 10,
       searchMember: {},
-      tableData: []
+      tableData: [],
     };
   },
   //监听属性 类似于data概念 计算属性
@@ -221,13 +238,14 @@ export default {
   watch: {},
   //方法集合
   methods: {
-      submitMemberForm(formName) {
-      this.$refs[formName].validate(async valid => {
+    // 添加
+    submitMemberForm(formName) {
+      this.$refs[formName].validate(async (valid) => {
         if (valid) {
           const response = await member.clq_addMember(this.addMemberForm);
           const res = response.data;
           if (response.flag) {
-           this.clq_List();
+            this.clq_List();
             this.$message.success(response.message);
           } else {
             message.PromptMessage("添加会员失败", "error");
@@ -235,28 +253,25 @@ export default {
           this.dialogFormVisible = false;
         }
       });
-      },
+    },
     //   条数
-      changePageSize(val){
-       this.pageSize = val;
-       //重新获取数据
-       this.clq_List();
-      },
-    //   页数   
-     changePage(val){
+    changePageSize(val) {
+      this.pageSize = val;
+      this.clq_List();
+    },
+    //   页数
+    changePage(val) {
       this.page = val;
-      //重新获取数据
-    this.clq_List();
-      },
+      this.clq_List();
+    },
     //   新增
-      handleAdd(){
-  this.dialogFormVisible = true;
+    handleAdd() {
+      this.dialogFormVisible = true;
       this.$nextTick(() => {
         this.$refs["addMemberForm"].resetFields();
-     
       });
-      },
-       //编辑会员方法
+    },
+    //编辑会员方法
     async editMemberForm() {
       const response = await member.clq_updateMember(
         this.addMemberForm.id,
@@ -264,20 +279,20 @@ export default {
       );
       const res = response.data;
       if (response.flag) {
-      this.clq_List();
+        this.clq_List();
       } else {
         // message.PromptMessage("更新会员数据失败", "error");
       }
       this.dialogFormVisible = false;
     },
     //   查询
-      async getMemberList() {
+    async getMemberList() {
       const memberList = await member.clq_getMember(
         this.page,
         this.pageSize,
         this.searchMember
       );
-          const res = memberList.data;
+      const res = memberList.data;
       if (memberList.flag) {
         this.tableData = res.rows;
         this.total = memberList.data.total;
@@ -285,35 +300,34 @@ export default {
         message.PromptMessage("获取会员列表失败", "error");
       }
     },
-    //
+    //获取会员列表数据
     async clq_List() {
-      let res = await member.clq_getMember();
+      let res = await member.clq_getMember(this.page,this.pageSize,this.addMemberForm);
       this.tableData = res.data.rows;
       this.total = res.data.total;
     },
-        //删除会员方法
-     handleDeleteMember(id) {
+    //删除会员方法
+    handleDeleteMember(id) {
       this.$confirm("确认删除这条记录吗？?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning"
+        type: "warning",
       })
-        .then(async() => {
-          const response =await member.clq_removeMember(id);
+        .then(async () => {
+          const response = await member.clq_removeMember(id);
           const res = response.data;
-          if(response.flag){
-            this.$message.success("删除成功")
-           this.clq_List();
-          }else{
+          if (response.flag) {
+            this.$message.success("删除成功");
+            this.clq_List();
+          } else {
             message.PromptMessage("删除会员数据失败", "error");
           }
         })
         .catch(() => {
-          message.PromptMessage("取消删除","info")
+          message.PromptMessage("取消删除", "info");
         });
-      
     },
- //编辑会员方法
+    //编辑会员方法
     async handleEditMember(id) {
       const response = await member.clq_findMember(id);
       const res = response.data;
@@ -324,17 +338,17 @@ export default {
       }
       this.dialogFormVisible = true;
     },
-     //重置表单方法
+    //重置表单方法
     resetForm(formName) {
       this.$refs[formName].resetFields();
-    }
+    },
   },
   // 过滤数据
-     filters: {
-      payTypeFilter(num) {
-        return payType.find((item) => item.id == num).type;
-      },
+  filters: {
+    payTypeFilter(num) {
+      return payType.find((item) => item.id == num).type;
     },
+  },
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {},
   //生命周期 - 挂载完成（可以访问DOM元素）
@@ -344,11 +358,5 @@ export default {
 };
 </script>
 <style lang='scss' scoped>
-//@import url(); 引入公共css类
-.el-form {
-  margin-top: 20px;
-}
-.el-pagination {
-  margin-top: 10px;
-}
+
 </style>

@@ -17,3 +17,21 @@ export function lssDelete(id){
         }
     })
 }
+// 新增
+export function lssAddShop(){
+   return request({
+       url:"/goods",
+       method:'POST',
+       data:{
+        code: "",
+        id: "",
+        name: "",
+        purchasePrice: "",
+        retailPrice: "",
+        spec: "",
+        storageNum: "",
+        supplierId: "",
+        supplierName: "",
+       }
+   })
+}
