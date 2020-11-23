@@ -1,11 +1,12 @@
 <template>
-  <div>
-    <el-container>
+  <div style="height:100%;">
+    <el-container style="height:100%">
       <el-header>Header</el-header>
-      <el-container>
-        <el-aside width="200px">
-          <el-aside width="200px">
+      <el-container style="height:100%">
+        <el-aside width="200px"  style="height:100%">
+          <el-aside width="200px"  style="height:100%">
             <el-menu
+             style="height:100%"
               default-active="2"
               class="el-menu-vertical-demo"
               background-color="#545c64"
