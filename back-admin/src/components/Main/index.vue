@@ -1,0 +1,28 @@
+<template>
+    <div class="main">
+        <app-link v-if="$route.path != '/frist'"></app-link>
+        <router-view></router-view>
+    </div>
+</template>
+
+<script>
+import AppLink from "../Applink"
+export default {
+ name : "", 
+ data(){
+  return {
+  }
+ },
+ components : {
+     AppLink
+ },
+}
+</script>
+
+
+<style scoped>
+    .main{
+        padding : 10px;
+    }
+    
+</style>

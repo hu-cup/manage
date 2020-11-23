@@ -1,6 +1,6 @@
 <template>
 <div>
-    我是首页
+    <h1>欢迎访问梦学谷管理系统</h1>
 </div>
 </template>
 
@@ -80,5 +80,7 @@ export default {
 }
 </script> 
 <style scoped>
-
+h1{
+    text-align: center;
+}
 </style>

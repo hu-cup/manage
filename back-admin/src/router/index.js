@@ -16,7 +16,7 @@ const routes = [
     path:'/',
     name:"Layout",
     component:Layout,
-    redirect:'/frist',
+    // redirect:'/login',
     children:[
       {
         path:'/frist',
@@ -33,7 +33,10 @@ const routes = [
     children:[
       {
        path:"/" ,
-       component:()=>import('../views/merber')
+       component:()=>import('../views/merber'),
+       meta:{
+           title:"会员管理"
+       }
       }
      
     ]
@@ -46,7 +49,10 @@ const routes = [
     children:[
       {
        path:"/" ,
-       component:()=>import('../views/supplier')
+       component:()=>import('../views/supplier'),
+       meta:{
+           title:"供应商管理"
+       }
       }
      
     ]
@@ -59,12 +65,15 @@ const routes = [
     children:[
       {
        path:"/" ,
-       component:()=>import('../views/goods')
+       component:()=>import('../views/goods'),
+       meta:{
+           title:"商品管理"
+       }
       }
      
     ]
   },
-  //商品管理
+  //员工管理
   {
     path:"/staff",
     name:"staff",
@@ -72,7 +81,10 @@ const routes = [
     children:[
       {
        path:"/" ,
-       component:()=>import('../views/staff')
+       component:()=>import('../views/staff'),
+       meta:{
+           title:"员工管理"
+       }
       }
      
     ]
