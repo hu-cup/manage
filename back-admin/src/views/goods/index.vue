@@ -1,6 +1,6 @@
 <template>
 <div>
-    我是商品
+    <div class="box"></div>
 </div>
 </template>
 
@@ -80,5 +80,9 @@ export default {
 }
 </script> 
 <style scoped>
-
+    .box{
+        width: 200px;
+        height: 200px;
+        background : yellow;
+    }
 </style>
