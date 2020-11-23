@@ -4,7 +4,7 @@ import store from "../store"
 
 // 2.用axios创建一个axios的实例
 const Server = axios.create({
-    baseURL: process.env.VUE_APP_SERVER_API, //根域名
+    baseURL: 'http://mengxuegu.com:9999/pro-api', //根域名
     timeout: 5000, //超时时间
 })
 
