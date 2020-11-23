@@ -1,7 +1,9 @@
 <template>
   <div style="height:100%;">
     <el-container style="height:100%">
-      <el-header>Header</el-header>
+      <el-header>
+          <Header></Header>
+      </el-header>
       <el-container style="height:100%">
         <el-aside width="200px"  style="height:100%">
           <el-aside width="200px"  style="height:100%">
@@ -46,13 +48,18 @@
 </template>
 
 <script>
+import Header from "./Header"
+import Main from "./Main"
 export default {
   // 组件名称
   name: "demo",
   // 组件参数 接收来自父组件的数据
   props: [],
   // 局部注册的组件
-  components: {},
+  components: {
+      Header,
+      Main
+  },
   // 组件状态值
   data() {
     return {};
