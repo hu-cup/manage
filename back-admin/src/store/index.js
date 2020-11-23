@@ -64,7 +64,7 @@ export default new Vuex.Store({
         logout().then(res=>{  
             commit("set_token",null);
             // commit("SET_INFO",null);
-            // removeUser();
+            removeUser();
             resolve(res)
         })
       })
