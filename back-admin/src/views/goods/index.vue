@@ -21,11 +21,42 @@
       <el-table-column prop="supplierName" label="供应商"></el-table-column>
       <el-table-column label="操作">
             <template slot-scope="scope">
-          <!-- <el-button size="mini" @click="handleEdit(scope.row.id)">编辑</el-button> -->
+          <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
           <el-button size="mini" type="danger" @click="handleDelete(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
+    <!-- 编辑弹出框 -->
+    <el-dialog title="编辑商品" :visible.sync="dialogFormVisible">
+  <el-form :model="user" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+  <el-form-item label="编辑名称" prop="name">
+    <el-input v-model="user.name"></el-input>
+  </el-form-item>
+    <el-form-item label="商品编码" prop="id">
+    <el-input v-model="user.id"></el-input>
+  </el-form-item>
+   <el-form-item label="商品规格" prop="spec">
+    <el-input v-model="user.spec"></el-input>
+  </el-form-item>
+   <el-form-item label="零售价" prop="purchasePrice">
+    <el-input v-model="user.purchasePrice"></el-input>
+  </el-form-item>
+    <el-form-item label="进货价" prop="retailPrice">
+    <el-input v-model="user.retailPrice"></el-input>
+  </el-form-item>
+    <el-form-item label="库存数量" prop="storageNum">
+    <el-input v-model="user.storageNum"></el-input>
+  </el-form-item>
+    <el-form-item label="供应商" prop="supplierName">
+    <el-input v-model="user.supplierName"></el-input>
+  </el-form-item>
+  
+</el-form>
+  <div slot="footer" class="dialog-footer">
+    <el-button @click="dialogFormVisible = false">取 消</el-button>
+    <el-button type="primary" @click="queding">确 定</el-button>
+  </div>
+</el-dialog>
   </div>
 </template>
 
@@ -42,6 +73,24 @@ export default {
   data() {
     return {
        tableData:[],
+       dialogFormVisible:false,
+       user:{
+
+       },
+    //    编辑
+     rules: {
+          name: [
+            { required: true, message: '请输入活动名称', trigger: 'blur' },
+            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          ],
+          id: [
+            { required: true, message: '请选择活动区域', trigger: 'change' }
+          ],
+         purchasePrice: [
+            { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
+          ],
+
+        }
     };
   },
   // 计算属性
@@ -76,7 +125,20 @@ export default {
          }else{
              this.$message.error("删除失败");
          }
-     }
+     },
+    //  编辑
+    handleEdit(row){
+        this.dialogFormVisible=true;
+        this.user = row
+    },
+    queding(){
+         this.dialogFormVisible=false;
+           this.tableData.filter(item=>{
+        if (item===this.user){
+          this.user=item
+        }
+      })
+    }
   },
   // 以下是生命周期钩子 注：没用到的钩子请自行删除
   /**
