@@ -1,11 +1,11 @@
 import Server from "../utils/request"
 
-export function getStaffList() {
+export function getStaffList(pageNum, pageSize) {
     return Server({
-        url: "/staff/list/search/1/10",
+        url: `/staff/list/search/${pageNum}/${pageSize}`,
         method: "POST",
         data: {
-            
+
         }
     })
 }
