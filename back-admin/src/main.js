@@ -7,6 +7,25 @@ import store from "./store";
 import axios from './utils/request'
 Vue.prototype.$axios = axios
 
+// 页面鉴权
+router.beforeEach((to,from,next)=>{
+  const token  = store.state.token;
+  if(!token){
+    if(to.path != '/login'){
+      next('/login')
+    }else{
+      next();
+    }
+  }else{
+    if(to.path=='/login'){
+      next('/frist')
+    }else{
+      next();
+    }
+  }
+})
+
+
 
 // 配置element Ui
 import ElementUI from 'element-ui';

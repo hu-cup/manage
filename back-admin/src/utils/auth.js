@@ -4,6 +4,7 @@ const INFO_KEY = "info";
 
 //获取token
 export function getUserToken(){
+    
     return sessionStorage.getItem(TOKEN_KEY)
 }
 //设置token
