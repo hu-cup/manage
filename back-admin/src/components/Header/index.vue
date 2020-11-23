@@ -6,7 +6,7 @@
         src="http://mengxuegu.com:9999/img/logo.7156be27.png"
         alt="logo"
       />
-      <h3 class="title">积云会员管理系统</h3>
+      <h3 class="title">梦学谷会员管理系统</h3>
     </router-link>
     <el-dropdown @command="handleCommand">
       <span class="el-dropdown-link">
