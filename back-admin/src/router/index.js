@@ -16,7 +16,7 @@ const routes = [
     path:'/',
     name:"Layout",
     component:Layout,
-    redirect:'/frist',
+    // redirect:'/login',
     children:[
       {
         path:'/frist',
